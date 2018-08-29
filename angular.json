@@ -1,0 +1,167 @@
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "version": 1,
+  "newProjectRoot": "clients",
+  "projects": {
+    "imeepos-cli": {
+      "root": "projects/imeepos-cli",
+      "sourceRoot": "projects/imeepos-cli/src",
+      "projectType": "library",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "iwe8:nestjs",
+          "options": {
+            "tsConfig": "projects/imeepos-cli/tsconfig.lib.json"
+          }
+        }
+      }
+    },
+    "iwe8": {
+      "root": "projects/iwe8",
+      "sourceRoot": "projects/iwe8/src",
+      "projectType": "library",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "iwe8:nestjs",
+          "options": {
+            "tsConfig": "projects/iwe8/tsconfig.lib.json"
+          }
+        }
+      }
+    },
+    "default": {
+      "root": "clients/default/",
+      "sourceRoot": "clients/default/src",
+      "projectType": "application",
+      "prefix": "app",
+      "schematics": {},
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/default",
+            "index": "clients/default/src/index.html",
+            "main": "clients/default/src/main.ts",
+            "polyfills": "clients/default/src/polyfills.ts",
+            "tsConfig": "clients/default/tsconfig.app.json",
+            "assets": [
+              "clients/default/src/favicon.ico",
+              "clients/default/src/assets"
+            ],
+            "styles": [
+              "clients/default/src/styles.css"
+            ],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [{
+                "replace": "clients/default/src/environments/environment.ts",
+                "with": "clients/default/src/environments/environment.prod.ts"
+              }],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "default:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "default:build:production"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "default:build"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "clients/default/src/test.ts",
+            "polyfills": "clients/default/src/polyfills.ts",
+            "tsConfig": "clients/default/tsconfig.spec.json",
+            "karmaConfig": "clients/default/karma.conf.js",
+            "styles": [
+              "clients/default/src/styles.css"
+            ],
+            "scripts": [],
+            "assets": [
+              "clients/default/src/favicon.ico",
+              "clients/default/src/assets"
+            ]
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "clients/default/tsconfig.app.json",
+              "clients/default/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        },
+        "ngc": {
+          "builder": "./dist/iwe8:ngc",
+          "options": {
+            "project": "clients/default/tsconfig.app.json"
+          }
+        },
+        "pm2": {
+          "builder": "./dist/iwe8:pm2",
+          "options": {
+            "name": "ngc",
+            "script": "architect",
+            "args": ["default:ngc", "--watch"]
+          }
+        }
+      }
+    },
+    "default-e2e": {
+      "root": "clients/default-e2e/",
+      "projectType": "application",
+      "architect": {
+        "e2e": {
+          "builder": "@angular-devkit/build-angular:protractor",
+          "options": {
+            "protractorConfig": "clients/default-e2e/protractor.conf.js",
+            "devServerTarget": "default:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "default:serve:production"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": "clients/default-e2e/tsconfig.e2e.json",
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "defaultProject": "default"
+}
