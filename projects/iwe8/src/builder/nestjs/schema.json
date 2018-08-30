@@ -4,6 +4,9 @@
   "properties": {
     "tsConfig": {
       "type": "string"
+    },
+    "watch": {
+      "type": "boolean"
     }
   },
   "required": [

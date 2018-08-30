@@ -1,5 +1,5 @@
 import { IndexHtmlWebpackPlugin } from '@angular-devkit/build-angular/src/angular-cli-files/plugins/index-html-webpack-plugin';
-import { switchMap, map, concatMap, last } from 'rxjs/operators';
+import { switchMap, map, concatMap, last, tap } from 'rxjs/operators';
 import { Observable, of } from 'rxjs';
 import { BuilderConfiguration } from '@angular-devkit/architect';
 import {
@@ -30,10 +30,13 @@ export class NgAddonBuilder extends WebpackBaseBuilder<any> {
         return ngConfiguration.pipe(
             concatMap(cfg => {
                 config = cfg;
+                console.log('ngConfiguration');
                 return this.ngc.start({
                     project: cfg.options.tsConfig,
                     watch: false
-                })
+                }).pipe(
+                    tap(res => console.log(res))
+                )
             }),
             concatMap(() => {
                 const cfg = config;

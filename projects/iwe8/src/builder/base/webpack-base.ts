@@ -3,11 +3,11 @@ import { WebpackConfigOptions } from '@angular-devkit/build-angular/src/angular-
 import { requireProjectModule } from '@angular-devkit/build-angular/src/angular-cli-files/utilities/require-project-module';
 import { readTsconfig } from '@angular-devkit/build-angular/src/angular-cli-files/utilities/read-tsconfig';
 import { normalizeFileReplacements, normalizeAssetPatterns, defaultProgress } from '@angular-devkit/build-angular/src/utils';
-import { resolve, virtualFs, Path, normalize, getSystemPath } from '@angular-devkit/core';
+import { resolve, virtualFs, Path, normalize, getSystemPath, terminal } from '@angular-devkit/core';
 import { WebpackMultNestServerBuilder, WebpackMultNestServerOption } from './webpack-mult-nest';
 import { concatMap, tap, map } from 'rxjs/operators';
 import { Builder, BuilderContext, BuilderConfiguration, BuildEvent, BuilderDescription } from '@angular-devkit/architect';
-import { Observable, of, concat, throwError } from 'rxjs';
+import { Observable, of, concat, throwError, Observer } from 'rxjs';
 import { last } from 'rxjs/operators';
 import { WebpackMultBuilder, WebpackMultOption } from './webpack-mult';
 import { NormalizedBrowserBuilderSchema } from '@angular-devkit/build-angular/src/browser';
@@ -27,6 +27,8 @@ import * as ts from 'typescript';
 import * as webpack from 'webpack';
 const webpackMerge = require('webpack-merge');
 import * as Git from 'simple-git';
+import { watch } from 'chokidar';
+
 export type WebapckBaseOption = WebpackMultOption |
     WebpackMultNestServerOption |
     WebpackMultDevServerOption;
@@ -171,5 +173,56 @@ export abstract class WebpackBaseBuilder<T> implements Builder<T> {
             webpackConfigs.push(typescriptConfigPartial);
         }
         return webpackMerge(webpackConfigs);
+    }
+
+
+    getDate() {
+        const now = new Date();
+        return terminal.cyan(`${now.getHours()}:${now.getMinutes()}`)
+    }
+
+    watch(paths: Path[]) {
+        return new Observable((obser: Observer<any>) => {
+            watch(paths, {
+                persistent: true,
+                ignored: [
+                    '**/node_modules/**/*',
+                    "**/.bin/**/*",
+                    "**/.git/**/*",
+                    '**/package.json',
+                    "**/dist/**/*",
+                    "**/publish/**/*",
+                    "**/out-tsc/**/*",
+                    "**/_/**/*",
+                    "**/patch/**/*",
+                    ".DS_Store",
+                    "**/.git",
+                    "**/_",
+                    "**/dist",
+                    "**/.git"
+                ]
+            })
+                .on('change', path => {
+                    obser.next({
+                        path: normalize(path),
+                        date: this.getDate(),
+                        type: 'change'
+                    })
+                })
+                .on('add', path => {
+                    obser.next({
+                        path: normalize(path),
+                        date: this.getDate(),
+                        type: 'add'
+                    })
+                })
+                .on('unlink', path => {
+                    obser.next({
+                        path: normalize(path),
+                        date: this.getDate(),
+                        type: 'unlink'
+                    })
+                });
+        })
     }
 }

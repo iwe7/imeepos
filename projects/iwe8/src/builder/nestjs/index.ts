@@ -7,16 +7,17 @@ import { iwe7TsCompiler } from '../../ts-compiler/index';
 
 export interface GulpSchema {
     tsConfig: string;
+    watch: boolean;
 }
 
-export class GulpBuilder implements Builder<GulpSchema>{
+export class GulpBuilder implements Builder<GulpSchema> {
     constructor(public context: BuilderContext) { }
     run(builderConfig: BuilderConfiguration<GulpSchema>): Observable<BuildEvent> {
         const options = builderConfig.options;
         const { tsConfig } = options;
         const root = this.context.workspace.root;
         const tsFile = join(root, normalize(tsConfig));
-        return iwe7TsCompiler(tsFile).pipe(
+        return iwe7TsCompiler(tsFile, options.watch).pipe(
             tap(res => {
                 this.context.logger.info(`${terminal.red('info')}: ${terminal.green(res)}`)
             }),

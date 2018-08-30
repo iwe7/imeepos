@@ -5,6 +5,11 @@
       "schema": "./nestjs/schema.json",
       "description": "nestjs builder for angular cli."
     },
+    "nestjs2": {
+      "class": "./nestjs2",
+      "schema": "./nestjs2/schema.json",
+      "description": "nestjs2 builder for angular cli."
+    },
     "start": {
       "class": "./start",
       "schema": "./start/schema.json",

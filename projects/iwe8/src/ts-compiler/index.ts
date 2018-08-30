@@ -14,7 +14,7 @@ export class Iwe7Version extends Version {
         return compareVersions(version.full, this.full);
     }
 }
-export function iwe7TsCompiler(tsconfig: string): Observable<string> {
+export function iwe7TsCompiler(tsconfig: string, watch: boolean = false): Observable<string> {
     return Observable.create((obser: Observer<string>) => {
         tsconfig = normalize(tsconfig);
         const root = normalize(process.cwd());
@@ -55,6 +55,7 @@ export function iwe7TsCompiler(tsconfig: string): Observable<string> {
                 done();
             }
         )
+
         const _tscTask = gulp.series(
             () => project.src()
                 .pipe(project())
@@ -64,16 +65,17 @@ export function iwe7TsCompiler(tsconfig: string): Observable<string> {
                 done();
             }
         );
-        const _zipTask = gulp.series(
-            () => gulp.src(outDir + '/**/*')
-                .pipe(zip(`${packageJson.name}/${packageJson.version}.zip`))
-                .pipe(gulp.dest('publish')),
-            (done) => {
-                obser.next('压缩完成');
-                done();
-            }
-        );
-        gulp.series(_staticTask, _tscTask, _zipTask)(done => {
+
+        // const _zipTask = gulp.series(
+        //     () => gulp.src(outDir + '/**/*')
+        //         .pipe(zip(`${packageJson.name}/${packageJson.version}.zip`))
+        //         .pipe(gulp.dest('publish')),
+        //     (done) => {
+        //         obser.next('压缩完成');
+        //         done();
+        //     }
+        // );
+        gulp.series(_staticTask, _tscTask)(done => {
             obser.next('任务完成');
             obser.complete();
         });

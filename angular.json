@@ -10,7 +10,7 @@
       "prefix": "lib",
       "architect": {
         "build": {
-          "builder": "iwe8:nestjs",
+          "builder": "iwe8:nestjs2",
           "options": {
             "tsConfig": "projects/imeepos-cli/tsconfig.lib.json"
           }
@@ -24,9 +24,10 @@
       "prefix": "lib",
       "architect": {
         "build": {
-          "builder": "iwe8:nestjs",
+          "builder": "./dist/iwe8:nestjs2",
           "options": {
-            "tsConfig": "projects/iwe8/tsconfig.lib.json"
+            "tsConfig": "projects/iwe8/tsconfig.lib.json",
+            "watch": true
           }
         },
         "git": {

@@ -11,6 +11,7 @@
     "init": "lerna init",
     "iwe8": "ng run iwe8:build",
     "imeepos-cli": "ng run imeepos-cli:build",
+    "imsDemo": "yarn iwe8 && ng run ims-demo:ng-addon",
     "postinstall": "yarn patch",
     "patch": "cd patch/ && sh ./patch.sh",
     "angular:core": "ng build && ng build --prod"
@@ -64,7 +65,7 @@
     "gulp-git": "^2.8.0",
     "gulp-typescript": "^5.0.0-alpha.3",
     "gulp-zip": "^4.2.0",
-    "iwe8": "^0.0.292",
+    "iwe8": "^0.0.608",
     "jasmine-core": "~2.99.1",
     "jasmine-spec-reporter": "~4.2.1",
     "karma": "~1.7.1",
