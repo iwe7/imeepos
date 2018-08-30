@@ -1,6 +1,6 @@
 {
   "name": "iwe8",
-  "version": "0.0.542",
+  "version": "0.0.582",
   "peerDependencies": {
     "@angular-devkit/architect": "*",
     "@angular-devkit/core": "*",
