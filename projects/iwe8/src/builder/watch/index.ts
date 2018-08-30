@@ -35,7 +35,7 @@ export class WatchBuilder extends WebpackBaseBuilder<WatchOptions> {
                     const target = tar.target;
                     if (target) {
                         console.log(target);
-                        this.git.commit(`${tar.path}]${res.type}:${res.date}`);
+                        this.git.commit(`${tar.path}]${res.type}`);
                         if (Array.isArray(target)) {
                             return merge(
                                 target.map(tar => {
