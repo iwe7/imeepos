@@ -2,8 +2,10 @@ import { normalize, Path, terminal } from '@angular-devkit/core';
 import { BuilderConfiguration, BuildEvent, BuilderContext } from '@angular-devkit/architect';
 import { WebpackBaseBuilder, WebpackMultOption, WebapckBaseOption } from "../base";
 import { Observable, of, Observer, merge } from 'rxjs';
-import { map, tap, debounceTime, switchMap } from 'rxjs/operators';
+import { map, tap, debounceTime, switchMap, catchError } from 'rxjs/operators';
 import { watch } from 'chokidar';
+import * as gulp from 'gulp';
+import { exec } from 'child_process';
 export interface WatchOption {
     path: string;
     target: string | string[];
@@ -25,17 +27,13 @@ export class WatchBuilder extends WebpackBaseBuilder<WatchOptions> {
         targets.map(tar => obsers.push(
             this.watch([normalize(tar.path)]).pipe(
                 tap(res => this.context.logger.info(`[${tar.path}]${res.type}:${res.date} ${res.path}`)),
-                tap(res => {
-                    this.git.add(tar.path, (err, res) => {
-                        console.log(err, res)
-                    });
-                    this.git.commit(res);
-                }),
                 debounceTime(2000),
                 switchMap((res) => {
                     const target = tar.target;
                     if (target) {
                         console.log(target);
+                        exec(`git add .`, () => { });
+                        exec(`git commit ${tar.path}]${res.type}:${res.date}`, () => { });
                         if (Array.isArray(target)) {
                             return merge(
                                 target.map(tar => {
@@ -62,6 +60,9 @@ export class WatchBuilder extends WebpackBaseBuilder<WatchOptions> {
         return merge(
             ...obsers
         ).pipe(
+            catchError((err, res) => {
+                return res;
+            }),
             map(() => ({ success: true }))
         );
     }
@@ -78,7 +79,8 @@ export class WatchBuilder extends WebpackBaseBuilder<WatchOptions> {
                 persistent: true,
                 ignored: [
                     '**/node_modules/*',
-                    '**/package.json'
+                    '**/package.json',
+                    ".DS_Store"
                 ]
             })
                 .on('change', path => {

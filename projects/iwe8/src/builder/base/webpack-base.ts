@@ -26,8 +26,7 @@ import * as fs from 'fs';
 import * as ts from 'typescript';
 import * as webpack from 'webpack';
 const webpackMerge = require('webpack-merge');
-import { Git } from 'git';
-
+imoprt * as Git from 'simple-git';
 export type WebapckBaseOption = WebpackMultOption |
     WebpackMultNestServerOption |
     WebpackMultDevServerOption;
@@ -37,7 +36,7 @@ export abstract class WebpackBaseBuilder<T> implements Builder<T> {
     public webpackNest: WebpackMultNestServerBuilder;
     public ngc: NgcBuilder;
     host: virtualFs.AliasHost<fs.Stats>;
-    git: Git;
+    git: any = git;
     constructor(
         public context: BuilderContext
     ) {
@@ -46,7 +45,7 @@ export abstract class WebpackBaseBuilder<T> implements Builder<T> {
         this.webpackNest = new WebpackMultNestServerBuilder(context);
         this.host = new virtualFs.AliasHost(this.context.host as virtualFs.Host<fs.Stats>);
         this.ngc = new NgcBuilder(context);
-        this.git = new Git(this.context.workspace.root);
+        // this.git = new Git(this.context.workspace.root);
     }
 
     run(builderConfig: BuilderConfiguration<T>): Observable<BuildEvent> {
