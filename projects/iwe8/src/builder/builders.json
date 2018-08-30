@@ -64,6 +64,11 @@
       "class": "./watch",
       "schema": "./watch/schema.json",
       "description": ""
+    },
+    "git": {
+      "class": "./git",
+      "schema": "./git/schema.json",
+      "description": ""
     }
   }
 }
