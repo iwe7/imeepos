@@ -46,7 +46,7 @@ export class GitBuilder extends WebpackBaseBuilder<WatchOptions> {
                     "**/out-tsc/**/*",
                     "**/publish/**/*",
                     "**/_/**/*",
-                    "**/.*/**/*",
+                    "**/.git/**/*",
                     "**/.DS_Store"
                 ]
             })
