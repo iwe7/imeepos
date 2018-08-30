@@ -1,11 +1,9 @@
-import { LoggingCallback } from '@angular-devkit/build-webpack';
 import { normalize, Path, terminal } from '@angular-devkit/core';
 import { BuilderConfiguration, BuildEvent, BuilderContext } from '@angular-devkit/architect';
 import { WebpackBaseBuilder, WebpackMultOption, WebapckBaseOption } from "../base";
-import { Observable, of, interval, Observer, Subject, merge } from 'rxjs';
-import { map, tap, concat, skip, debounceTime, switchMap } from 'rxjs/operators';
+import { Observable, of, Observer, merge } from 'rxjs';
+import { map, tap, debounceTime, switchMap } from 'rxjs/operators';
 import { watch } from 'chokidar';
-
 export interface WatchOption {
     path: string;
     target: string | string[];
@@ -27,6 +25,12 @@ export class WatchBuilder extends WebpackBaseBuilder<WatchOptions> {
         targets.map(tar => obsers.push(
             this.watch([normalize(tar.path)]).pipe(
                 tap(res => this.context.logger.info(`[${tar.path}]${res.type}:${res.date} ${res.path}`)),
+                tap(res => {
+                    this.git.add(tar.path, (err, res) => {
+                        console.log(err, res)
+                    });
+                    this.git.commit(res);
+                }),
                 debounceTime(2000),
                 switchMap((res) => {
                     const target = tar.target;
