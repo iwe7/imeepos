@@ -1,0 +1,25 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema",
+    "type": "object",
+    "properties": {
+        "targets": {
+            "type": "array",
+            "items": {
+                "path": {
+                    "type": "string"
+                },
+                "target": {
+                    "oneOf": [{
+                        "type": "string"
+                    }, {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    }]
+                }
+            }
+        }
+    },
+    "minItems": 1
+}

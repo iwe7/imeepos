@@ -10,7 +10,7 @@ export interface StartSchema {
     output: string;
 }
 
-export class StartBuilder implements Builder<StartSchema>{
+export class StartBuilder implements Builder<StartSchema> {
     constructor(public context: BuilderContext) { }
     run(builderConfig: BuilderConfiguration<StartSchema>): Observable<BuildEvent> {
         return Observable.create((obser: Observer<BuildEvent>) => {

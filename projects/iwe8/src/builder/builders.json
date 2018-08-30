@@ -49,6 +49,21 @@
       "class": "./pm2",
       "schema": "./pm2/schema.json",
       "description": "start pm2 builder for angular cli."
+    },
+    "ng-builder": {
+      "class": "./ng-builder",
+      "schema": "./ng-builder/schema.json",
+      "description": "start ng-builder builder for angular cli."
+    },
+    "ng-addon": {
+      "class": "./ng-addon",
+      "schema": "./ng-addon/schema.json",
+      "description": "start ng-addon builder for angular cli."
+    },
+    "watch": {
+      "class": "./watch",
+      "schema": "./watch/schema.json",
+      "description": ""
     }
   }
 }

@@ -78,6 +78,7 @@ export class ElectronBuilder implements Builder<ElectronOptions>{
             map(() => builderConfig)
         );
     }
+
 }
 
 export default ElectronBuilder;

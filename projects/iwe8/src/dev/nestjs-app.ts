@@ -4,7 +4,7 @@ import { Options } from 'webpack-dev-middleware';
 import { normalize, virtualFs } from '@angular-devkit/core';
 import { INestApplication, INestExpressApplication } from '@nestjs/common';
 import { renderModule } from '@angular/platform-server';
-import { Configuration, Compiler, MultiCompiler, MultiWatching } from 'webpack';
+import { Configuration, Compiler, MultiCompiler } from 'webpack';
 import { Stats } from 'fs';
 export interface CompilerOptions {
     ng: Configuration,

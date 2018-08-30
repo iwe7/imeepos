@@ -170,7 +170,7 @@ export class DevServerBuilder implements Builder<DevServerBuilderOptions> {
                 webpackConfig.devServer = webpackDevServerConfig;
                 // 配置dll
                 const { dllTarget } = options;
-                if(dllTarget){
+                if (dllTarget) {
                     webpackConfig.plugins.push(
                         new webpack.DllReferencePlugin({
                             context: __dirname,
@@ -222,8 +222,8 @@ export class DevServerBuilder implements Builder<DevServerBuilderOptions> {
                 index: `${servePath}/${path.basename(browserOptions.index)}`,
                 disableDotRule: true,
                 htmlAcceptHeaders: ['text/html', 'application/xhtml+xml'],
-            },
-            stats: false,
+            } as any,
+            stats: false as any,
             compress: browserOptions.optimization,
             watchOptions: {
                 poll: browserOptions.poll,
