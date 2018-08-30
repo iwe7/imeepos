@@ -26,14 +26,16 @@ export class WatchBuilder extends WebpackBaseBuilder<WatchOptions> {
         const obsers: Observable<any>[] = [];
         targets.map(tar => obsers.push(
             this.watch([normalize(tar.path)]).pipe(
-                tap(res => this.context.logger.info(`[${tar.path}]${res.type}:${res.date} ${res.path}`)),
+                tap(res => {
+                    this.git.add([res.path])
+                    this.context.logger.info(`[${tar.path}]${res.type}:${res.date} ${res.path}`)
+                }),
                 debounceTime(2000),
                 switchMap((res) => {
                     const target = tar.target;
                     if (target) {
                         console.log(target);
-                        exec(`git add .`, () => { });
-                        exec(`git commit ${tar.path}]${res.type}:${res.date}`, () => { });
+                        this.git.commit(`${tar.path}]${res.type}:${res.date}`);
                         if (Array.isArray(target)) {
                             return merge(
                                 target.map(tar => {
@@ -85,21 +87,21 @@ export class WatchBuilder extends WebpackBaseBuilder<WatchOptions> {
             })
                 .on('change', path => {
                     obser.next({
-                        path: terminal.gray(normalize(path)),
+                        path: normalize(path),
                         date: this.getDate(),
                         type: terminal.green('change')
                     })
                 })
                 .on('add', path => {
                     obser.next({
-                        path: terminal.gray(normalize(path)),
+                        path: normalize(path),
                         date: this.getDate(),
                         type: terminal.yellow('add')
                     })
                 })
                 .on('unlink', path => {
                     obser.next({
-                        path: terminal.gray(normalize(path)),
+                        path: normalize(path),
                         date: this.getDate(),
                         type: terminal.red('unlink')
                     })
