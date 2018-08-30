@@ -23,10 +23,10 @@ export class NgAddonBuilder extends WebpackBaseBuilder<any> {
         const root = this.context.workspace.root;
         let projectRoot: string;
         let config: any;
-        this.host.list(this.context.workspace.root).subscribe(res => console.log(res));
-        this.host.watch(normalize('projects/iwe8')).subscribe(res => {
-            console.log(res);
-        });
+        // this.host.list(this.context.workspace.root).subscribe(res => console.log(res));
+        // this.host.watch(normalize('projects/iwe8')).subscribe(res => {
+        //     console.log(res);
+        // });
         return ngConfiguration.pipe(
             concatMap(cfg => {
                 config = cfg;
