@@ -24,8 +24,8 @@ export class GitBuilder extends WebpackBaseBuilder<WatchOptions> {
                     this.git.add([res.path]);
                     this.context.logger.info(`[${res.type}]${res.date} ${res.path}`);
                     const now = new Date();
-                    const hour = now.getHours();
-                    this.git.commit(`[${hour > 9 ? hour : 0 + '' + hour}${res.type}]${options[res.type] ? options[res.type] : res.path}`);
+                    const hour = now.getHours() > 9 ? now.getHours() : `0${now.getHours()}`;
+                    this.git.commit(`[${hour}${res.type}]${options[res.type] ? options[res.type] : res.path}`);
                 }),
             )).pipe(
                 map(() => ({ success: true }))
