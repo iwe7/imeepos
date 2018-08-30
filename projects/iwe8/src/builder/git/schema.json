@@ -3,13 +3,16 @@
     "type": "object",
     "properties": {
         "change": {
-            "type": "string"
+            "type": "string",
+            "default": "更新"
         },
         "add": {
-            "type": "string"
+            "type": "string",
+            "default": "增加"
         },
         "unlink": {
-            "type": "string"
+            "type": "string",
+            "default": "删除"
         }
     }
 }
