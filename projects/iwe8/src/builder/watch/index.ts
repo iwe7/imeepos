@@ -72,7 +72,7 @@ export class WatchBuilder extends WebpackBaseBuilder<WatchOptions> {
 
     getDate() {
         const now = new Date();
-        return terminal.cyan(`${now.getHours()}:${now.getMinutes()}`)
+        return `${now.getHours()}:${now.getMinutes()}`
     }
 
     watch(paths: Path[]) {
