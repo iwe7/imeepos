@@ -29,6 +29,10 @@
             "tsConfig": "projects/iwe8/tsconfig.lib.json"
           }
         },
+        "git": {
+          "builder": "./dist/iwe8:git",
+          "options": {}
+        },
         "watch": {
           "builder": "./dist/iwe8:watch",
           "options": {
