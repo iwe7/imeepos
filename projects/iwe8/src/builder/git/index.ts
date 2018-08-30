@@ -47,7 +47,7 @@ export class GitBuilder extends WebpackBaseBuilder<WatchOptions> {
                     "**/publish/**/*",
                     "**/_/**/*",
                     "**/.*/**/*",
-                    "dist/.DS_Store"
+                    "**/.DS_Store"
                 ]
             })
                 .on('change', path => {
