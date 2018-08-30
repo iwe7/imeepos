@@ -103,7 +103,7 @@ export class WatchBuilder extends WebpackBaseBuilder<WatchOptions> {
                     obser.next({
                         path: normalize(path),
                         date: this.getDate(),
-                        type: terminal.red('unlink')
+                        type: 'unlink'
                     })
                 });
         })
