@@ -72,7 +72,7 @@ export class WatchBuilder extends WebpackBaseBuilder<WatchOptions> {
 
     getDate() {
         const now = new Date();
-        return `${now.getHours()}:${now.getMinutes()}`
+        return terminal.cyan(`${now.getHours()}:${now.getMinutes()}`)
     }
 
     watch(paths: Path[]) {
@@ -96,7 +96,7 @@ export class WatchBuilder extends WebpackBaseBuilder<WatchOptions> {
                     obser.next({
                         path: normalize(path),
                         date: this.getDate(),
-                        type: terminal.yellow('add')
+                        type: 'add'
                     })
                 })
                 .on('unlink', path => {
