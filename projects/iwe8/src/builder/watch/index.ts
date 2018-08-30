@@ -89,7 +89,7 @@ export class WatchBuilder extends WebpackBaseBuilder<WatchOptions> {
                     obser.next({
                         path: normalize(path),
                         date: this.getDate(),
-                        type: terminal.green('change')
+                        type: 'change'
                     })
                 })
                 .on('add', path => {
