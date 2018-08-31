@@ -11,8 +11,10 @@ export class NgTargetServerBuilder extends WebpackBaseBuilder<BuildWebpackServer
         const options = builderConfig.options;
         return this.getNgServerConfig(builderConfig).pipe(
             concatMap(cfg => {
+                cfg.entry = {
+                    server: cfg.entry['main']
+                };
                 cfg.target = options.target;
-                console.log(cfg.target);
                 return of(new WebpackMultOption([cfg]))
             })
         );

@@ -437,17 +437,17 @@
         "server": {
           "builder": "./dist/iwe8:ng-target-server",
           "options": {
-            "outputPath": "dist/webpacker-server",
+            "outputPath": "dist/webpacker",
             "main": "clients/webpacker/src/main.server.ts",
             "tsConfig": "clients/webpacker/tsconfig.server.json",
             "target": "electron-main"
           }
         },
-        "app-shell": {
-          "builder": "@angular-devkit/build-angular:app-shell",
+        "ng-targets": {
+          "builder": "./dist/iwe8:ng-targets",
           "options": {
-            "browserTarget": "webpacker:build",
-            "serverTarget": "webpacker:server"
+            "targets": ["webpacker:build", "webpacker:server"],
+            "watch": true
           }
         },
         "extract-i18n": {

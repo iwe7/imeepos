@@ -103,7 +103,7 @@
     "webpack-chain": "^4.9.0"
   },
   "description": "imeepos framework",
-  "main": "dist/webpacker-server/main.js",
+  "main": "dist/webpacker/server.js",
   "repository": "https://github.com/iwe7/imeepos.git",
   "author": "imeepos",
   "license": "MIT"

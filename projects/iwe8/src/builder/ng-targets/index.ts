@@ -25,10 +25,10 @@ export class NgTargetsBuilder extends WebpackBaseBuilder<NgTargetsOption> {
                     )
                 )
             });
-            const cfgs = [];
+            let cfgs = [];
             return merge(...obsers).subscribe({
-                next: (cfg: any) => {
-                    cfgs.push(cfg);
+                next: (cfg: WebapckBaseOption) => {
+                    cfgs = [...cfgs, ...cfg.configs]
                 },
                 complete: () => {
                     obser.next(new WebpackMultOption(cfgs, watch));
@@ -40,3 +40,5 @@ export class NgTargetsBuilder extends WebpackBaseBuilder<NgTargetsOption> {
         })
     }
 }
+
+export default NgTargetsBuilder;
