@@ -4,3 +4,4 @@ export * from './install.action';
 export * from './new.action';
 export * from './publish.action';
 export * from './generate.action';
+export * from './dll.action';

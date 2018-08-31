@@ -10,7 +10,7 @@
       "prefix": "lib",
       "architect": {
         "build": {
-          "builder": "iwe8:nestjs2",
+          "builder": "./dist/iwe8:nestjs2",
           "options": {
             "tsConfig": "projects/imeepos-cli/tsconfig.lib.json"
           }
@@ -407,6 +407,7 @@
               "target": "electron-main"
             },
             "production": {
+              "scripts": [],
               "fileReplacements": [{
                 "replace": "clients/webpacker/src/environments/environment.ts",
                 "with": "clients/webpacker/src/environments/environment.prod.ts"

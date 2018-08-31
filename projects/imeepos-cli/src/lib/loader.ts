@@ -3,7 +3,7 @@ import {
     AddCommand, InstallCommand,
     NewCommand, PublishCommand,
     StartCommand, TestCommand,
-    GenerateCommand
+    GenerateCommand, DllCommand
 } from './commands/index';
 export class CommandLoader {
     static load(command: CommanderStatic) {
@@ -14,5 +14,6 @@ export class CommandLoader {
         new StartCommand().load(command);
         new TestCommand().load(command);
         new GenerateCommand().load(command);
+        new DllCommand().load(command);
     }
 }

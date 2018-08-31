@@ -1,4 +1,4 @@
-import { Configuration } from 'webpack';
+import { Configuration, DllReferencePlugin } from 'webpack';
 import {
     BuilderConfiguration,
     BuilderContext,
@@ -10,6 +10,7 @@ import {
     WebpackBaseBuilder, WebpackMultOption,
     WebapckBaseOption
 } from '../base';
+
 import { join } from 'path';
 export class BrowserBuilder extends WebpackBaseBuilder<BrowserBuilderSchema> {
     constructor(public context: BuilderContext) {
@@ -24,6 +25,12 @@ export class BrowserBuilder extends WebpackBaseBuilder<BrowserBuilderSchema> {
                 cfg.target = options.target;
                 // '.ts', '.tsx', '.mjs', '.js' '.json'
                 cfg.resolve.extensions.push('.json');
+                cfg.plugins.push(
+                    new DllReferencePlugin({
+                        manifest: require(join(root, '_', 'library', 'manifest.json')),
+                        context: '.'
+                    })
+                )
                 return cfg;
             }),
             concatMap(cfg => {

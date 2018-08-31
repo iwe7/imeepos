@@ -6,3 +6,4 @@ export * from './publish.command';
 export * from './start.command';
 export * from './test.command';
 export * from './generate.command';
+export * from './dll.command';
