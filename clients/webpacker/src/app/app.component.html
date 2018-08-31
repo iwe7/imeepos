@@ -6,8 +6,8 @@
     </ul>
   </div>
   <div class="center">
-    <nz-row nzGutter="24">
-      <nz-col nz-col nzSpan="8">
+    <div nz-row nzGutter="24" style="height: 100%;">
+      <div nz-col nz-col nzSpan="8">
         <div class="form-row">
           <nz-radio-group [(ngModel)]="option.mode">
             <label nz-radio nzValue="development">development</label>
@@ -27,7 +27,7 @@
         </div>
         <div class="form-row">
           entry
-          <a href="javascript:;">修改</a>
+          <a href="javascript:;" (click)="addEntry()">修改</a>
         </div>
         <div class="form-row">
           output
@@ -90,8 +90,11 @@
           &nbsp;
           <button nz-button>保存</button>
         </div>
-      </nz-col>
-    </nz-row>
+      </div>
+      <div nz-col nzSpan="16" style="height: 100%;">
+        <textarea nz-input class="console"></textarea>
+      </div>
+    </div>
   </div>
 </div>
 <!-- <div class="footer"></div> -->

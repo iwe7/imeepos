@@ -28,10 +28,18 @@
         .form-row {
             background: #fff;
             padding: 5px;
+
             span {
                 padding: 0 10px;
             }
+
             margin-bottom: 5px;
+        }
+
+        .console {
+            background: #333;
+            height: 100%;
+            color: #efefef;
         }
     }
 }

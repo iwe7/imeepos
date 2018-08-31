@@ -1,3 +1,4 @@
+import { DialogService } from './electron/dialog.service';
 
 import { Injectable } from '@angular/core';
 import { app, BrowserWindow, BrowserWindowConstructorOptions } from 'electron';
@@ -6,11 +7,14 @@ import * as path from 'path';
 export class AppService {
     mainWindow: BrowserWindow;
     debug = /--debug/.test(process.argv[2])
-    constructor() { }
+    constructor(
+        public dialog: DialogService
+    ) { }
 
     start() {
         console.log('app start');
         this.openWindow();
+        this.dialog.start();
     }
 
     openWindow() {
