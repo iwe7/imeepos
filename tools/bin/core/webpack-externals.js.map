@@ -1,0 +1,1 @@
+{"version":3,"file":"webpack-externals.js","sourceRoot":"","sources":["../../webpack/core/webpack-externals.ts"],"names":[],"mappings":";;AACA,MAAa,gBAAgB;IACzB,GAAG;QACC,OAAO,EAAE,CAAC;IACd,CAAC;CACJ;AAJD,4CAIC","sourcesContent":["import { ExternalsElement } from 'webpack';\nexport class WebpackExternals {\n    get(): ExternalsElement[] {\n        return [];\n    }\n}\n"]}

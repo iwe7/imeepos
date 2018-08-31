@@ -1,7 +1,7 @@
 {
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
   "version": 1,
-  "newProjectRoot": "addons",
+  "newProjectRoot": "clients",
   "projects": {
     "imeepos-cli": {
       "root": "projects/imeepos-cli",
@@ -34,16 +34,50 @@
           "builder": "./dist/iwe8:git",
           "options": {}
         },
+        "dll.compiler": {
+          "builder": "./dist/iwe8:dll",
+          "options": {
+            "entry": {
+              "compiler": [
+                "@angular/compiler"
+              ]
+            },
+            "isLocal": false,
+            "name": "compiler"
+          }
+        },
+        "dll.core": {
+          "builder": "./dist/iwe8:dll",
+          "options": {
+            "entry": {
+              "core": [
+                "@angular/core",
+                "@angular/common",
+                "@angular/common/http",
+                "@angular/router",
+                "@angular/forms",
+                "@angular/platform-browser",
+                "@angular/platform-browser-dynamic"
+              ]
+            },
+            "deps": [
+              "compiler"
+            ],
+            "name": "core"
+          }
+        },
         "watch": {
           "builder": "./dist/iwe8:watch",
           "options": {
             "targets": [{
-              "path": "projects/iwe8",
-              "target": "iwe8:build"
-            }, {
-              "path": "projects/imeepos-cli",
-              "target": "imeepos-cli:build"
-            }]
+                "path": "projects/iwe8",
+                "target": "iwe8:build"
+              },
+              {
+                "path": "projects/imeepos-cli",
+                "target": "imeepos-cli:build"
+              }
+            ]
           }
         }
       }
@@ -79,7 +113,7 @@
                 "with": "clients/default/src/environments/environment.prod.ts"
               }],
               "optimization": true,
-              "outputHashing": "all",
+              "outputHashing": "none",
               "sourceMap": false,
               "extractCss": true,
               "namedChunks": false,
@@ -95,13 +129,19 @@
           "options": {
             "ngTarget": "default:build2:production",
             "isDll": true,
-            "name": "default"
+            "name": "default",
+            "deps": [
+              "core"
+            ]
           },
           "configurations": {
             "production": {
               "ngTarget": "default:build2:production",
               "isDll": false,
-              "name": "default"
+              "name": "default",
+              "deps": [
+                "core"
+              ]
             }
           }
         },
@@ -332,7 +372,148 @@
           }
         }
       }
+    },
+    "webpacker": {
+      "root": "clients/webpacker/",
+      "sourceRoot": "clients/webpacker/src",
+      "projectType": "application",
+      "prefix": "app",
+      "schematics": {},
+      "targets": {
+        "build": {
+          "builder": "./dist/iwe8:ng-target",
+          "options": {
+            "outputPath": "dist/webpacker",
+            "index": "clients/webpacker/src/index.html",
+            "main": "clients/webpacker/src/main.ts",
+            "polyfills": "clients/webpacker/src/polyfills.ts",
+            "tsConfig": "clients/webpacker/tsconfig.app.json",
+            "target": "electron-renderer",
+            "assets": [
+              "clients/webpacker/src/favicon.ico",
+              "clients/webpacker/src/assets"
+            ],
+            "styles": [
+              "clients/webpacker/src/styles.css",
+              "node_modules/ng-zorro-antd/src/ng-zorro-antd.less"
+            ],
+            "scripts": []
+          },
+          "configurations": {
+            "main": {
+              "main": "clients/webpacker/src/main.ts",
+              "server": "clients/webpacker/src/main.server.ts",
+              "outputPath": "dist/webpacker-server",
+              "target": "electron-main"
+            },
+            "production": {
+              "fileReplacements": [{
+                "replace": "clients/webpacker/src/environments/environment.ts",
+                "with": "clients/webpacker/src/environments/environment.prod.ts"
+              }],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true
+            }
+          }
+        },
+        "serve": {
+          "builder": "./dist/iwe8:electron-dev-server",
+          "options": {
+            "browserTarget": "webpacker:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "webpacker:build:production"
+            }
+          }
+        },
+        "server": {
+          "builder": "./dist/iwe8:ng-target-server",
+          "options": {
+            "outputPath": "dist/webpacker-server",
+            "main": "clients/webpacker/src/main.server.ts",
+            "tsConfig": "clients/webpacker/tsconfig.server.json",
+            "target": "electron-main"
+          }
+        },
+        "app-shell": {
+          "builder": "@angular-devkit/build-angular:app-shell",
+          "options": {
+            "browserTarget": "webpacker:build",
+            "serverTarget": "webpacker:server"
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "webpacker:build"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "clients/webpacker/src/test.ts",
+            "polyfills": "clients/webpacker/src/polyfills.ts",
+            "tsConfig": "clients/webpacker/tsconfig.spec.json",
+            "karmaConfig": "clients/webpacker/karma.conf.js",
+            "styles": [
+              "clients/webpacker/src/styles.css"
+            ],
+            "scripts": [],
+            "assets": [
+              "clients/webpacker/src/favicon.ico",
+              "clients/webpacker/src/assets"
+            ]
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "clients/webpacker/tsconfig.app.json",
+              "clients/webpacker/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    },
+    "webpacker-e2e": {
+      "root": "clients/webpacker-e2e/",
+      "projectType": "application",
+      "targets": {
+        "e2e": {
+          "builder": "@angular-devkit/build-angular:protractor",
+          "options": {
+            "protractorConfig": "clients/webpacker-e2e/protractor.conf.js",
+            "devServerTarget": "webpacker:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "webpacker:serve:production"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": "clients/webpacker-e2e/tsconfig.e2e.json",
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
     }
   },
-  "defaultProject": "default"
+  "defaultProject": "webpacker"
 }

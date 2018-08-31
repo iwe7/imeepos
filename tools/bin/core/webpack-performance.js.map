@@ -1,0 +1,1 @@
+{"version":3,"file":"webpack-performance.js","sourceRoot":"","sources":["../../webpack/core/webpack-performance.ts"],"names":[],"mappings":";;AACA,MAAa,kBAAkB;IAE3B,GAAG;QACC,OAAO,EAAE,CAAA;IACb,CAAC;CACJ;AALD,gDAKC","sourcesContent":["import { Options } from 'webpack';\nexport class WebpackPerformance {\n\n    get(): Options.Performance {\n        return {}\n    }\n}\n"]}

@@ -65,6 +65,21 @@
       "schema": "./ng-addon/schema.json",
       "description": "start ng-addon builder for angular cli."
     },
+    "ng-target": {
+      "class": "./ng-target",
+      "schema": "./ng-target/schema.json",
+      "description": "start ng-target builder for angular cli."
+    },
+    "ng-targets": {
+      "class": "./ng-targets",
+      "schema": "./ng-targets/schema.json",
+      "description": "start ng-targets builder for angular cli."
+    },
+    "ng-target-server": {
+      "class": "./ng-target-server",
+      "schema": "./ng-target-server/schema.json",
+      "description": "start ng-target-server builder for angular cli."
+    },
     "watch": {
       "class": "./watch",
       "schema": "./watch/schema.json",

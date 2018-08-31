@@ -3,7 +3,7 @@ import { BrowserBuilderSchema } from '@angular-devkit/build-angular/src/browser/
 import { BuilderContext, BuilderConfiguration } from '@angular-devkit/architect';
 import {
     WebpackBaseBuilder, WebapckBaseOption,
-    WebpackMultOption, mainfast
+    WebpackMultOption, mainfast, getMainContext
 } from '../base';
 import { Observable } from 'rxjs';
 import * as webpack from 'webpack';
@@ -13,7 +13,8 @@ export class NgBuilderOption {
     constructor(
         public ngTarget: string,
         public isDll: boolean,
-        public name: string
+        public name: string,
+        public deps: string[]
     ) { }
 }
 export class NgBuilder extends WebpackBaseBuilder<NgBuilderOption> {
@@ -30,21 +31,18 @@ export class NgBuilder extends WebpackBaseBuilder<NgBuilderOption> {
             }),
             map((config: webpack.Configuration) => {
                 const root = this.context.workspace.root;
-                config.output.library = 'imeepos_[name]';
-                if (options.isDll) {
-                    config.output.path = join(root, '_/tmp');
-                    config.plugins.push(
-                        new webpack.DllPlugin({
-                            path: join(root, mainfast, options.name, 'mainfast.json'),
-                            name: 'imeepos_[name]',
-                            context: mainfast + '/' + options.name
-                        })
-                    );
-                    return new WebpackMultOption([config], false, {}, this.getStats(true))
-                } else {
-                    config.output.path = join(root, mainfast, options.name);
-                    return new WebpackMultOption([config], false, {}, this.getStats(true))
+                if (options.deps) {
+                    options.deps.map(name => {
+                        const json = require(join(root, mainfast, name, name + '.json'));
+                        config.plugins.push(
+                            new webpack.DllReferencePlugin({
+                                context: mainfast,
+                                manifest: json
+                            })
+                        );
+                    })
                 }
+                return new WebpackMultOption([config], true, {}, this.getStats(true))
             })
         );
     }

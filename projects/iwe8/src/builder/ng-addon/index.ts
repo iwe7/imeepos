@@ -48,9 +48,6 @@ export class NgAddonBuilder extends WebpackBaseBuilder<any> {
                 config.output.path = join(root, addons, options.name, 'template');
                 config.output.library = options.name + '_[name]';
                 let main: string = config.entry['main'];
-                // main = main.replace('addons', 'out-tsc/app/addons')
-                // main = main.replace('.ts', 'ngfactory.js');
-                console.log(main);
                 config.entry = {
                     main: main
                 };

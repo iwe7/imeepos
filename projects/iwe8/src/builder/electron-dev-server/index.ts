@@ -70,7 +70,9 @@ export class DevServerBuilder implements Builder<DevServerBuilderOptions> {
         return this.getDevServerWebpackConfig(builderConfig).pipe(
             concatMap(webpackConfig => {
                 return webpackDevServerBuilder.runWebpackDevServer(
-                    webpackConfig, undefined, getBrowserLoggingCb(this.browserOptions.verbose),
+                    webpackConfig,
+                    undefined,
+                    getBrowserLoggingCb(this.browserOptions.verbose),
                 );
             }),
             map(buildEvent => {
@@ -181,6 +183,7 @@ export class DevServerBuilder implements Builder<DevServerBuilderOptions> {
             root, projectRoot, host, browserOptions as NormalizedBrowserBuilderSchema
         );
         webpackConfig.target = 'electron-renderer';
+        webpackConfig.resolve.extensions.push('.json');
         return webpackConfig;
     }
 

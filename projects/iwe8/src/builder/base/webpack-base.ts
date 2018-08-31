@@ -20,15 +20,17 @@ import {
     getNonAotConfig,
     getStatsConfig,
     getStylesConfig,
-    getWebpackStatsConfig
+    getWebpackStatsConfig,
+    getServerConfig
 } from '@angular-devkit/build-angular/src/angular-cli-files/models/webpack-configs';
 import * as fs from 'fs';
+import { Stats } from 'fs';
 import * as ts from 'typescript';
 import * as webpack from 'webpack';
 const webpackMerge = require('webpack-merge');
 import * as Git from 'simple-git';
 import { watch } from 'chokidar';
-
+import { BuildWebpackServerSchema } from '@angular-devkit/build-angular/src/server/schema';
 export type WebapckBaseOption = WebpackMultOption |
     WebpackMultNestServerOption |
     WebpackMultDevServerOption;
@@ -70,6 +72,17 @@ export abstract class WebpackBaseBuilder<T> implements Builder<T> {
     }
 
     abstract getWebpackConfig(builderConfig: BuilderConfiguration<T>): Observable<WebapckBaseOption>;
+
+
+    getBuilder(builderConfig: BuilderConfiguration<T>): Observable<Builder<T>> {
+        const architect = this.context.architect;
+        return architect.getBuilderDescription<T>(builderConfig).pipe(
+            concatMap(builderDescription => {
+                const context = this.context;
+                return of(architect.getBuilder<T>(builderDescription, context));
+            })
+        );
+    }
 
     buildTarget<T = any>(path: string, overrides: any = {}): Observable<BuilderConfiguration<T>> {
         const architect = this.context.architect;
@@ -134,6 +147,69 @@ export abstract class WebpackBaseBuilder<T> implements Builder<T> {
 
     getStats(verbose: boolean): webpack.Stats {
         return getWebpackStatsConfig(verbose) as any;
+    }
+
+    getNgServerConfig(builderConfig: BuilderConfiguration<BuildWebpackServerSchema>) {
+        const options = builderConfig.options;
+        const root = this.context.workspace.root;
+        const projectRoot = resolve(root, builderConfig.root);
+        return of(null).pipe(
+            concatMap(() => options.deleteOutputPath
+                ? this.deleteOutputDir(root, normalize(options.outputPath), this.context.host)
+                : of(null)),
+            concatMap(() => normalizeFileReplacements(options.fileReplacements, this.host, root)),
+            tap(fileReplacements => options.fileReplacements = fileReplacements),
+            concatMap(() => {
+                const webpackConfig = this.buildNgServerWebpackConfig(root, projectRoot, this.host, options);
+                return of(webpackConfig);
+            }),
+        );
+    }
+
+    buildNgServerWebpackConfig(
+        root: Path,
+        projectRoot: Path,
+        host: virtualFs.Host<Stats>,
+        options: BuildWebpackServerSchema
+    ) {
+        let wco: WebpackConfigOptions;
+        const tsConfigPath = getSystemPath(normalize(resolve(root, normalize(options.tsConfig))));
+        const tsConfig = readTsconfig(tsConfigPath);
+        const projectTs = requireProjectModule(getSystemPath(projectRoot), 'typescript') as typeof ts;
+        const supportES2015 = tsConfig.options.target !== projectTs.ScriptTarget.ES3
+            && tsConfig.options.target !== projectTs.ScriptTarget.ES5;
+        const buildOptions: typeof wco['buildOptions'] = {
+            ...options as {} as typeof wco['buildOptions'],
+        };
+        wco = {
+            root: getSystemPath(root),
+            projectRoot: getSystemPath(projectRoot),
+            buildOptions: {
+                ...buildOptions,
+                buildOptimizer: false,
+                aot: true,
+                platform: 'server',
+                scripts: [],
+                styles: [],
+            },
+            tsConfig,
+            tsConfigPath,
+            supportES2015,
+        };
+        wco.buildOptions.progress = defaultProgress(wco.buildOptions.progress);
+        const webpackConfigs: {}[] = [
+            getCommonConfig(wco),
+            getServerConfig(wco),
+            getStylesConfig(wco),
+            getStatsConfig(wco),
+        ];
+        if (wco.buildOptions.main || wco.buildOptions.polyfills) {
+            const typescriptConfigPartial = wco.buildOptions.aot
+                ? getAotConfig(wco, host)
+                : getNonAotConfig(wco, host);
+            webpackConfigs.push(typescriptConfigPartial);
+        }
+        return webpackMerge(webpackConfigs);
     }
 
     buildNgBrowserWebpackConfig(

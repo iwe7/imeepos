@@ -1,0 +1,1 @@
+{"version":3,"file":"webpack-stats.js","sourceRoot":"","sources":["../../webpack/core/webpack-stats.ts"],"names":[],"mappings":";;AACA,MAAa,YAAY;IACrB,GAAG;QACC,OAAO,EAAE,CAAA;IACb,CAAC;CACJ;AAJD,oCAIC","sourcesContent":["import { Options } from 'webpack';\nexport class WebpackStats {\n    get(): Options.Stats {\n        return {}\n    }\n}\n"]}

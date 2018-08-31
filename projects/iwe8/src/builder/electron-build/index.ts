@@ -40,12 +40,7 @@ import { AssetPatternObject, BrowserBuilderSchema, CurrentFileReplacement } from
 const webpackMerge = require('webpack-merge');
 import * as webpack from 'webpack';
 import { DllBuilder } from '../dll';
-const DllLinkPlugin = require("dll-link-webpack-plugin");
-// TODO: figure out a better way to normalize assets, extra entry points, file replacements,
-// and whatever else needs to be normalized, while keeping type safety.
-// Right now this normalization has to be done in all other builders that make use of the
-// BrowserBuildSchema and BrowserBuilder.buildWebpackConfig.
-// It would really help if it happens during architect.validateBuilderOptions, or similar.
+
 export interface NormalizedBrowserBuilderSchema extends BrowserBuilderSchema {
     assets: AssetPatternObject[];
     fileReplacements: CurrentFileReplacement[];
@@ -111,7 +106,6 @@ export class BrowserBuilder implements Builder<BrowserBuilderSchema> {
             concatMap(() => normalizeAssetPatterns(
                 options.assets, this.host, root, projectRoot, builderConfig.sourceRoot)
             ),
-            // Replace the assets in options with the normalized version.
             tap((assetPatternObjects => options.assets = assetPatternObjects)),
             map(() => {
                 let webpackConfig;
@@ -122,30 +116,9 @@ export class BrowserBuilder implements Builder<BrowserBuilderSchema> {
                     return throwError(e);
                 }
                 webpackConfig.target = 'electron-renderer';
+                webpackConfig.resolve.extensions.push('.json');
                 return webpackConfig;
-                // return webpackBuilder.runWebpack(webpackConfig, getBrowserLoggingCb(options.verbose));
-            }),
-            // switchMap(webpackConfig => {
-            //     const { dllTarget } = options;
-            //     console.log(dllTarget);
-            //     if (dllTarget) {
-            //         const dllConfig = this.buildTarget(dllTarget);
-            //         const options = dllConfig.options;
-            //         return this.dll.getWebpackConfig(options).pipe(
-            //             tap(dll => {
-            //                 webpackConfig.plugins.push(
-            //                     new DllLinkPlugin({
-            //                         config: dll
-            //                     })
-            //                 );
-            //             }),
-            //             map(() => webpackConfig)
-            //         );
-            //     } else {
-            //         return of(webpackConfig);
-            //     }
-            // }),
-            // tap(res => console.log(res))
+            })
         );
     }
 
@@ -176,12 +149,9 @@ export class BrowserBuilder implements Builder<BrowserBuilderSchema> {
 
         const tsConfigPath = getSystemPath(normalize(resolve(root, normalize(options.tsConfig))));
         const tsConfig = readTsconfig(tsConfigPath);
-
         const projectTs = requireProjectModule(getSystemPath(projectRoot), 'typescript') as typeof ts;
-
         const supportES2015 = tsConfig.options.target !== projectTs.ScriptTarget.ES3
             && tsConfig.options.target !== projectTs.ScriptTarget.ES5;
-
         wco = {
             root: getSystemPath(root),
             projectRoot: getSystemPath(projectRoot),
@@ -206,10 +176,7 @@ export class BrowserBuilder implements Builder<BrowserBuilderSchema> {
                 : getNonAotConfig(wco, host);
             webpackConfigs.push(typescriptConfigPartial);
         }
-
         const webpackConfig = webpackMerge(webpackConfigs);
-        //
-
         return webpackConfig;
     }
 

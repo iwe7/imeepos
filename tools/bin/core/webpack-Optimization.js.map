@@ -1,0 +1,1 @@
+{"version":3,"file":"webpack-Optimization.js","sourceRoot":"","sources":["../../webpack/core/webpack-Optimization.ts"],"names":[],"mappings":";;AACA,MAAa,mBAAmB;IAC5B,GAAG;QACC,OAAO,EAAE,CAAC;IACd,CAAC;CACJ;AAJD,kDAIC","sourcesContent":["import { Options } from 'webpack';\nexport class WebpackOptimization {\n    get(): Options.Optimization {\n        return {};\n    }\n}\n"]}

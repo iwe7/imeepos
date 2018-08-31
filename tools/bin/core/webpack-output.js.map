@@ -1,0 +1,1 @@
+{"version":3,"file":"webpack-output.js","sourceRoot":"","sources":["../../webpack/core/webpack-output.ts"],"names":[],"mappings":";;AACA,MAAa,aAAa;CAAsB;AAAhD,sCAAgD","sourcesContent":["import { Output } from 'webpack';\nexport class WebpackOutput implements Output { }\n"]}

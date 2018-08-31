@@ -5,8 +5,11 @@
     "entry": {
       "type": "object"
     },
-    "output": {
-      "type": "string"
+    "deps": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
     }
   }
 }

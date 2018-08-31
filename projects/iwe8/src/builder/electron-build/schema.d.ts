@@ -10,7 +10,6 @@ export interface BrowserBuilderSchema {
      * List of static application assets.
      */
     assets: AssetPattern[];
-    dllTarget: string;
     /**
      * The name of the main entry-point file.
      */

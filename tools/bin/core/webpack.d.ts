@@ -1,0 +1,34 @@
+import { Configuration } from 'webpack';
+export declare class Webpack {
+    private root;
+    private mode;
+    private name;
+    private context;
+    private devtool;
+    private target;
+    private bail;
+    private profile;
+    private cache;
+    private watch;
+    private watchOptions;
+    private debug;
+    private node;
+    private amd;
+    private recordsPath;
+    private recordsInputPath;
+    private recordsOutputPath;
+    private parallelism;
+    private entry;
+    private plugin;
+    private output;
+    private module;
+    private resolve;
+    private resolveLoader;
+    private externals;
+    private stats;
+    private performance;
+    private optimization;
+    constructor(root: string);
+    get(): Configuration;
+    setMode(mode: "development" | "production" | "none"): void;
+}
