@@ -1,0 +1,8 @@
+{
+    "compileOnSave": true,
+    "compilerOptions": {
+        "sourceRoot": ".",
+        "rootDir": ".",
+        "outDir": "../dist"
+    }
+}

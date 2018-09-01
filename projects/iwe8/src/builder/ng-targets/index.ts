@@ -1,5 +1,5 @@
 import { concatMap, switchMap } from 'rxjs/operators';
-import { Observable, of, merge, Observer } from 'rxjs';
+import { Observable, of, concat, merge, Observer } from 'rxjs';
 import { BuilderConfiguration } from '@angular-devkit/architect';
 import { WebpackBaseBuilder, WebpackMultOption, WebapckBaseOption } from '../base';
 
@@ -28,7 +28,10 @@ export class NgTargetsBuilder extends WebpackBaseBuilder<NgTargetsOption> {
             let cfgs = [];
             return merge(...obsers).subscribe({
                 next: (cfg: WebapckBaseOption) => {
-                    cfgs = [...cfgs, ...cfg.configs]
+                    if (cfg.configs) {
+                        cfgs.push(...cfg.configs);
+                    }
+                    console.log(cfgs);
                 },
                 complete: () => {
                     obser.next(new WebpackMultOption(cfgs, watch));

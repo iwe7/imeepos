@@ -1,0 +1,15 @@
+{
+  "id": "cfc9945e6b5aee4abf9f303e2964efe6",
+  "meta": {
+    "version": "1.0",
+    "package": "nestpack",
+    "filename": "./index.ts",
+    "pos": 1,
+    "col": 2
+  },
+  "content": "import { existsSync, mkdirSync, writeFileSync, readFileSync } from 'fs';\nimport { join, dirname } from 'path';\nimport { createHash } from 'crypto';\nimport * as ts from 'typescript';\n\nconst md5 = createHash('md5');\nconst file = join(__dirname, 'imeepos.json');\nif (!existsSync(file)) {\n    mkdirSync(dirname(file));\n}\nclass ImeeposData {\n    // 文件版本号\n    version: string = '1.0';\n    // 文件包名\n    package: string = 'nestpack';\n    // 文件名称\n    filename: string = './index.ts';\n    // 行号\n    pos: number = 1;\n    // 列号\n    col: number = 2;\n}\nclass ImeeposContent {\n    id: string;\n    content: string;\n    // 文件目录\n    require: string;\n    // 导出对象\n    exports: string[];\n    meta: ImeeposData;\n}\nconst data = new ImeeposData();\n// 写入数据库\nconst content = new ImeeposContent();\ncontent.id = md5.update(JSON.stringify(data)).digest('hex');\ncontent.meta = data;\ncontent.content = readFileSync(data.filename).toString();\ncontent.require = join(data.package, data.filename);\ncontent.exports = ['default'];\n\nconst options = JSON.parse(readFileSync(join(__dirname, 'src/tsconfig.json')).toString());\nconst host = ts.createCompilerHost(options);\nconst sourceFile = host.getSourceFile(join(__dirname, 'src/test2.ts'), ts.ScriptTarget.ES5);\nsourceFile.forEachChild((node: ts.Node) => {\n    console.log(`\n        ${node.pos}-${node.end}\n        ${node.flags}\n        ${node.decorators}\n        ${node.modifiers}\n        ${\n        getNodeType(node.kind)\n        }\n        ${\n        node.getText(sourceFile)\n        }\n        `);\n})\nts.ScriptKind\nwriteFileSync(file, JSON.stringify(content, null, 2))\n\n\nfunction getNodeType(kind: number) {\n    for (let key in ts.SyntaxKind) {\n        if (key === kind + '') {\n            return ts.SyntaxKind[key];\n        }\n    }\n}\n",
+  "require": "nestpack/index.ts",
+  "exports": [
+    "default"
+  ]
+}

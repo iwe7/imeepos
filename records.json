@@ -1,0 +1,133 @@
+{
+  "clients/webpacker/src/app/app.component.html": [
+    {
+      "modules": {
+        "byIdentifier": {},
+        "usedIds": {}
+      },
+      "chunks": {
+        "byName": {},
+        "bySource": {},
+        "usedIds": [
+          0
+        ]
+      }
+    }
+  ],
+  "clients/webpacker/src/app/ui-core/ui-webpack/ui-webpack-select-target/ui-webpack-select-target.component.html": [
+    {
+      "modules": {
+        "byIdentifier": {},
+        "usedIds": {}
+      },
+      "chunks": {
+        "byName": {},
+        "bySource": {},
+        "usedIds": [
+          0
+        ]
+      }
+    }
+  ],
+  "mini-css-extract-plugin ../../node_modules/@angular-devkit/build-angular/src/angular-cli-files/plugins/raw-css-loader.js!../../node_modules/postcss-loader/lib/index.js??extracted!src/styles.css": [
+    {
+      "modules": {
+        "byIdentifier": {},
+        "usedIds": {}
+      },
+      "chunks": {
+        "byName": {
+          "mini-css-extract-plugin": 0
+        },
+        "bySource": {},
+        "usedIds": [
+          0
+        ]
+      }
+    }
+  ],
+  "mini-css-extract-plugin ../../node_modules/@angular-devkit/build-angular/src/angular-cli-files/plugins/raw-css-loader.js!../../node_modules/postcss-loader/lib/index.js??extracted!../../node_modules/less-loader/dist/cjs.js??ref--16-3!../../node_modules/ng-zorro-antd/src/ng-zorro-antd.less": [
+    {
+      "modules": {
+        "byIdentifier": {},
+        "usedIds": {}
+      },
+      "chunks": {
+        "byName": {
+          "mini-css-extract-plugin": 0
+        },
+        "bySource": {},
+        "usedIds": [
+          0
+        ]
+      }
+    }
+  ],
+  "clients/webpacker/src/app/app.component.scss": [
+    {
+      "modules": {
+        "byIdentifier": {},
+        "usedIds": {}
+      },
+      "chunks": {
+        "byName": {},
+        "bySource": {},
+        "usedIds": [
+          0
+        ]
+      }
+    }
+  ],
+  "clients/webpacker/src/app/ui-core/ui-webpack/ui-webpack-select-target/ui-webpack-select-target.component.scss": [
+    {
+      "modules": {
+        "byIdentifier": {},
+        "usedIds": {}
+      },
+      "chunks": {
+        "byName": {},
+        "bySource": {},
+        "usedIds": [
+          0
+        ]
+      }
+    }
+  ],
+  "modules": {
+    "byIdentifier": {
+      "css ../../node_modules/@angular-devkit/build-angular/src/angular-cli-files/plugins/raw-css-loader.js!../../node_modules/postcss-loader/lib/index.js??extracted!../../node_modules/less-loader/dist/cjs.js??ref--16-3!../../node_modules/ng-zorro-antd/src/ng-zorro-antd.less 0": 0,
+      "css ../../node_modules/@angular-devkit/build-angular/src/angular-cli-files/plugins/raw-css-loader.js!../../node_modules/postcss-loader/lib/index.js??extracted!src/styles.css 0": 1,
+      "multi src/styles.css ../../node_modules/ng-zorro-antd/src/ng-zorro-antd.less": 2,
+      "multi src/polyfills.ts": 3,
+      "multi src/main.ts": 4,
+      "multi @angular/core @angular/common @angular/common/http @angular/forms @angular/router": 5
+    },
+    "usedIds": {
+      "0": 0,
+      "1": 1,
+      "2": 2,
+      "3": 3,
+      "4": 4,
+      "5": 5
+    }
+  },
+  "chunks": {
+    "byName": {
+      "runtime": 0,
+      "vendor": 1,
+      "styles": 2,
+      "polyfills": 3,
+      "main": 4,
+      "libs": 5
+    },
+    "bySource": {},
+    "usedIds": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5
+    ]
+  }
+}

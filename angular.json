@@ -1,7 +1,7 @@
 {
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
   "version": 1,
-  "newProjectRoot": "clients",
+  "newProjectRoot": "addons",
   "projects": {
     "imeepos-cli": {
       "root": "projects/imeepos-cli",
@@ -34,6 +34,18 @@
           "builder": "./dist/iwe8:git",
           "options": {}
         },
+        "dll.tslib": {
+          "builder": "./dist/iwe8:dll",
+          "options": {
+            "entry": {
+              "tslib": [
+                "tslib"
+              ]
+            },
+            "isLocal": false,
+            "name": "tslib"
+          }
+        },
         "dll.compiler": {
           "builder": "./dist/iwe8:dll",
           "options": {
@@ -43,7 +55,10 @@
               ]
             },
             "isLocal": false,
-            "name": "compiler"
+            "name": "compiler",
+            "deps": [
+              "tslib"
+            ]
           }
         },
         "dll.core": {
@@ -51,19 +66,37 @@
           "options": {
             "entry": {
               "core": [
-                "@angular/core",
-                "@angular/common",
-                "@angular/common/http",
-                "@angular/router",
-                "@angular/forms",
-                "@angular/platform-browser",
-                "@angular/platform-browser-dynamic"
+                "@angular/core"
               ]
             },
             "deps": [
               "compiler"
             ],
             "name": "core"
+          }
+        },
+        "dll.router": {
+          "builder": "./dist/iwe8:dll",
+          "options": {
+            "entry": {
+              "router": "@angular/router"
+            },
+            "deps": [
+              "tslib"
+            ],
+            "name": "router"
+          }
+        },
+        "ng-targets": {
+          "builder": "./dist/iwe8:ng-targets",
+          "options": {
+            "targets": [
+              "iwe8:dll.tslib",
+              "iwe8:dll.compiler",
+              "iwe8:dll.router",
+              "iwe8:dll.core"
+            ],
+            "watch": true
           }
         },
         "watch": {
@@ -128,7 +161,7 @@
               "namedChunks": false,
               "aot": true,
               "extractLicenses": true,
-              "vendorChunk": false,
+              "vendorChunk": true,
               "buildOptimizer": true
             }
           }
@@ -156,70 +189,37 @@
         "ng-targets": {
           "builder": "./dist/iwe8:ng-targets",
           "options": {
-            "targets": ["webpacker:build", "webpacker:server"],
+            "targets": [
+              "webpacker:build",
+              "webpacker:server"
+            ],
             "watch": true
-          }
-        },
-        "extract-i18n": {
-          "builder": "@angular-devkit/build-angular:extract-i18n",
-          "options": {
-            "browserTarget": "webpacker:build"
-          }
-        },
-        "test": {
-          "builder": "@angular-devkit/build-angular:karma",
-          "options": {
-            "main": "clients/webpacker/src/test.ts",
-            "polyfills": "clients/webpacker/src/polyfills.ts",
-            "tsConfig": "clients/webpacker/tsconfig.spec.json",
-            "karmaConfig": "clients/webpacker/karma.conf.js",
-            "styles": [
-              "clients/webpacker/src/styles.css"
-            ],
-            "scripts": [],
-            "assets": [
-              "clients/webpacker/src/favicon.ico",
-              "clients/webpacker/src/assets"
-            ]
-          }
-        },
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": [
-              "clients/webpacker/tsconfig.app.json",
-              "clients/webpacker/tsconfig.spec.json"
-            ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
+          },
+          "configurations": {
+            "production": {
+              "targets": [
+                "webpacker:build:production",
+                "webpacker:server"
+              ],
+              "watch": false
+            }
           }
         }
       }
     },
-    "webpacker-e2e": {
-      "root": "clients/webpacker-e2e/",
+    "ims-demo": {
+      "root": "addons/ims-demo",
+      "sourceRoot": "addons/ims-demo/src",
       "projectType": "application",
+      "prefix": "lib",
       "targets": {
-        "e2e": {
-          "builder": "@angular-devkit/build-angular:protractor",
+        "build": {
+          "builder": "./dist/iwe8:ng-addon",
           "options": {
-            "protractorConfig": "clients/webpacker-e2e/protractor.conf.js",
-            "devServerTarget": "webpacker:serve"
-          },
-          "configurations": {
-            "production": {
-              "devServerTarget": "webpacker:serve:production"
-            }
-          }
-        },
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": "clients/webpacker-e2e/tsconfig.e2e.json",
-            "exclude": [
-              "**/node_modules/**"
-            ]
+            "outputPath": "dist/addons/ims-demo",
+            "main": "addons/ims-demo/src/public_api.ts",
+            "tsConfig": "addons/ims-demo/tsconfig.lib.json",
+            "target": "web"
           }
         }
       }

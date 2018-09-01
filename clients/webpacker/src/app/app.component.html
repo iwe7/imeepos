@@ -9,18 +9,18 @@
     <div nz-row nzGutter="24" style="height: 100%;">
       <div nz-col nz-col nzSpan="8">
         <div class="form-row">
-          <nz-radio-group [(ngModel)]="option.mode">
+          <nz-radio-group [(ngModel)]="webpack.options.mode">
             <label nz-radio nzValue="development">development</label>
             <label nz-radio nzValue="production">production</label>
             <label nz-radio nzValue="none">none</label>
           </nz-radio-group>
         </div>
         <div class="form-row">
-          <input type="text" nz-input [(ngModel)]="option.name" placeholder="请给应用起个好听的名字吧">
+          <input type="text" nz-input [(ngModel)]="webpack.options.name" placeholder="请给应用起个好听的名字吧">
         </div>
         <div class="form-group">
           构建目标：
-          <nz-select style="min-width: 8em;" [(ngModel)]="option.target" nzPlaceHolder="请选择目标平台" nzAllowClear>
+          <nz-select style="min-width: 8em;" [(ngModel)]="webpack.options.target" nzPlaceHolder="请选择目标平台" nzAllowClear>
             <nz-option *ngFor="let item of webpack.target.targets" [nzLabel]="item.title" [nzValue]="item.code">
             </nz-option>
           </nz-select>
@@ -86,9 +86,11 @@
           <a href="javascript:;">修改</a>
         </div>
         <div class="form-row">
-          <button nz-button nzType="primary">运行</button>
+          <button nz-button nzType="primary" (click)="run()">运行</button>
           &nbsp;
           <button nz-button>保存</button>
+
+          <button nz-button (click)="compiler()">compiler</button>
         </div>
       </div>
       <div nz-col nzSpan="16" style="height: 100%;">

@@ -8,7 +8,7 @@ import { concatMap, map } from 'rxjs/operators';
 import { BrowserBuilderSchema } from './schema';
 import {
     WebpackBaseBuilder, WebpackMultOption,
-    WebapckBaseOption
+    WebapckBaseOption, mainfast
 } from '../base';
 
 import { join } from 'path';
@@ -21,16 +21,48 @@ export class BrowserBuilder extends WebpackBaseBuilder<BrowserBuilderSchema> {
         const root = this.context.workspace.root;
         return this.getNgBrowserConfig(builderConfig).pipe(
             map((cfg: Configuration) => {
+                // Entry
+                cfg.entry = {
+                    ...cfg.entry as any,
+                    ...{
+                        libs: [
+                            "@angular/core",
+                            "@angular/common",
+                            "@angular/common/http",
+                            "@angular/forms",
+                            "@angular/router"
+                        ]
+                    }
+                }
                 // web node electron-render electron-main webworker
+                cfg.output.libraryTarget = 'umd';
+                // cfg.output.library = 'angular'
                 cfg.target = options.target;
-                // '.ts', '.tsx', '.mjs', '.js' '.json'
+                // common
+                // '.ts', '.tsx', '.mjs', '.js' '.json' '.html' '.css' '.scs' '.less'
                 cfg.resolve.extensions.push('.json');
-                cfg.plugins.push(
-                    new DllReferencePlugin({
-                        manifest: require(join(root, '_', 'library', 'manifest.json')),
-                        context: '.'
-                    })
-                )
+                cfg.resolve.extensions.push('.html');
+                cfg.resolve.extensions.push('.css');
+                cfg.resolve.extensions.push('.scss');
+                cfg.resolve.extensions.push('.less');
+
+                cfg.recordsPath = join(root, 'records.json');
+                cfg.recordsInputPath = join(root, 'records.json');
+                cfg.recordsOutputPath = join(root, 'records.json');
+                cfg.optimization.portableRecords = true;
+                cfg.optimization.occurrenceOrder = true;
+
+                if (options.deps) {
+                    options.deps.map(name => {
+                        const json = require(join(root, mainfast, name, name + '.json'));
+                        cfg.plugins.push(
+                            new DllReferencePlugin({
+                                context: mainfast,
+                                manifest: json
+                            })
+                        );
+                    });
+                }
                 return cfg;
             }),
             concatMap(cfg => {

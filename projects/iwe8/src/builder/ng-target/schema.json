@@ -10,6 +10,12 @@
                 "$ref": "#/definitions/assetPattern"
             }
         },
+        "deps": {
+            "type": "array",
+            "items": {
+                "type": "string"
+            }
+        },
         "target": {
             "type": "string"
         },

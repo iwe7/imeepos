@@ -11,7 +11,7 @@ export interface BuildWebpackServerSchema {
      */
     tsConfig: string;
 
-    target: string;
+    target: any;
     /**
      * Output sourcemaps.
      */

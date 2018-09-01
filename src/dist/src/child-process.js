@@ -29,7 +29,6 @@ class ForkChildProcessBidging extends core_bidging_1.CoreBidging {
                     next(new core_bidging_1.CoreBidgingEvent('message', res));
                 }
             });
-            this._fork.send(new core_bidging_1.CoreBidgingEvent('start', {}));
         }
         catch (e) {
             error(e);

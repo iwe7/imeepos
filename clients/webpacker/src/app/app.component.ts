@@ -1,3 +1,4 @@
+import { TsService } from './typescript/ts.service';
 import { RenderDialogService } from './electron-render/dialog.service';
 import { WebpackEntryService } from './webpack/webpack-entry.service';
 import { WebpackService } from './webpack/webpack.service';
@@ -13,12 +14,26 @@ export class AppComponent {
   constructor(
     public webpack: WebpackService,
     public entry: WebpackEntryService,
-    public dialog: RenderDialogService
+    public dialog: RenderDialogService,
+    private ts: TsService
   ) {
     this.option = this.webpack.createEmptyConfiguration();
   }
 
+  compiler() {
+    console.log(this.ts);
+    const source = this.ts.getSourceFile();
+    console.log(source);
+    source.forEachChild((node) => {
+      // console.log(node);
+    })
+  }
+
   addEntry() {
     this.entry.addEntry('main').subscribe();
+  }
+
+  run() {
+    this.webpack.run();
   }
 }

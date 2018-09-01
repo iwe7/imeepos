@@ -14,6 +14,7 @@ export interface BrowserBuilderSchema {
      * The name of the main entry-point file.
      */
     main: string;
+    deps: string[];
 
     server: string;
 
