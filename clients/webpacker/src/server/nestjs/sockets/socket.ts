@@ -5,10 +5,11 @@ import { map } from 'rxjs/operators';
 @WebSocketGateway()
 export class SocketEvent {
     @WebSocketServer() server;
-
-    @SubscribeMessage('events')
+    constructor() {}
+    @SubscribeMessage('message')
     onEvent(client, data): Observable<WsResponse<number>> {
-        const event = 'events';
+        console.log(data);
+        const event = 'message';
         const response = [1, 2, 3];
         return from(response).pipe(map(res => ({ event, data: res })));
     }

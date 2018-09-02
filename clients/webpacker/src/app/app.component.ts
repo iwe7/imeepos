@@ -4,8 +4,11 @@ import { WebpackEntryService } from './webpack/webpack-entry.service';
 import { WebpackService } from './webpack/webpack.service';
 import { Component } from '@angular/core';
 import * as webpack from 'webpack';
-// import * as socket from 'socket.io-client';
-const io = require('socket.io-client');
+import { SocketService } from './socket/socket.service';
+import { catchError } from 'rxjs/operators';
+// import { connect } from './models/socket.io2/src/index';
+// import { Socket } from './models/socket.io2/src/index';
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -17,7 +20,8 @@ export class AppComponent {
     public webpack: WebpackService,
     public entry: WebpackEntryService,
     public dialog: RenderDialogService,
-    private ts: TsService
+    private ts: TsService,
+    public socketService: SocketService
   ) {
     this.option = this.webpack.createEmptyConfiguration();
   }
@@ -25,25 +29,23 @@ export class AppComponent {
   compiler() { }
 
   addEntry() {
-    this.entry.addEntry('main').subscribe();
+    this.entry.addEntry('main').pipe(
+      catchError((err, res) => {
+        if (err) {
+          console.log(err);
+          return res;
+        } else {
+          return res;
+        }
+      })
+    ).subscribe();
+  }
+  connect() {
+    this.socketService.connect().subscribe();
   }
 
-  connect() {
-    const socket = io('http://localhost:8081');
-    socket.on('connect', function () {
-      console.log('Connected');
-      socket.emit('events', { test: 'test' });
-    });
-    socket.on('events', function (data) {
-      console.log('event', data);
-    });
-    socket.on('exception', function (data) {
-      console.log('event', data);
-    });
-    socket.on('disconnect', function () {
-      console.log('Disconnected');
-    });
-    console.log(socket);
+  send() {
+    this.socketService.send('test');
   }
 
   run() {

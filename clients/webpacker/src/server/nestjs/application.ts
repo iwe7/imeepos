@@ -4,7 +4,7 @@ import { SocketEvent } from "./sockets/socket";
 
 @Module({
     providers: [
-        // SocketEvent
+        SocketEvent
     ],
     controllers: [
         ApplicationController

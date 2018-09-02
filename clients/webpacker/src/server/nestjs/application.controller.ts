@@ -1,6 +1,6 @@
-import { Injectable, Get } from "@nestjs/common";
+import { Get, Controller } from "@nestjs/common";
 
-@Injectable()
+@Controller()
 export class ApplicationController {
     @Get()
     index() {

@@ -26,7 +26,11 @@ export class AppService {
             minWidth: 680,
             height: 840,
             title: app.getName(),
-            frame: false
+            frame: false,
+            // webPreferences: {
+            //     webSecurity: false,
+            //     allowRunningInsecureContent: true,
+            // },
         }
         if (process.platform === 'linux') {
             windowOptions.icon = path.join(__dirname, '/assets/app-icon/png/512.png')
