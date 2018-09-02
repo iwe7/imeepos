@@ -1,10 +1,12 @@
-import { createHash } from 'crypto';
+// import { createHash } from 'crypto';
 import { WebpackEntryService } from './webpack-entry.service';
 import { WebpackTargetService, TargetEnum } from './webpack-target.service';
 import { Subject } from 'rxjs';
 import { Injectable } from '@angular/core';
 import * as webpack from 'webpack';
 import { TestPlugin } from './plugins/src/test-plugin/TestPlugin';
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+// const ExtractTextWebapckPlugin = require('extract-text-webpack-plugin')
 @Injectable({
   providedIn: 'root'
 })
@@ -27,13 +29,20 @@ export class WebpackService {
       target: TargetEnum.web,
       name: TargetEnum.web + '-' + Math.floor(Math.random() * 10000),
       mode: 'development',
-      devtool: "source-map"
+      devtool: "source-map",
+      module: {
+        rules: []
+      }
     }
   }
 
   run() {
     this.options.plugins = [
-      new TestPlugin()
+      new TestPlugin(),
+      new MiniCssExtractPlugin({
+        filename: '[name].css',
+        chunkFilename: '[id].css'
+      })
     ]
     webpack(this.options).run((err, stats) => {
       if (err) {

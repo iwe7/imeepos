@@ -1,18 +1,15 @@
 import { tap, map } from 'rxjs/operators';
-import { CoreBidgingEvent } from '../core/core-bidging';
-import { ProcessSubject } from '../core/process';
-const proc = new ProcessSubject<CoreBidgingEvent>({});
+import { ProcessSubject } from '../core';
+const proc = new ProcessSubject<any>();
 
 proc.pipe(
-    tap(res => {
-        if (res.action === 'start') {
-            for (let i = 0; i < 1000000000; i++) {
-
-            }
-            proc.next({
-                action: "finish",
-                payload: {}
-            })
+    tap((res: number) => {
+        console.log('begin', res)
+        let s = 0;
+        for (let i = 0; i < res; i++) {
+            s += i;
         }
+        proc.next(s);
+        proc.complete();
     })
 ).subscribe();

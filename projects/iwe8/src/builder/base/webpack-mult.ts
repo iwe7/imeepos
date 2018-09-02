@@ -2,7 +2,7 @@ import {
     BuildEvent,
     BuilderContext,
 } from '@angular-devkit/architect';
-import { logging } from '@angular-devkit/core';
+import { logging, terminal } from '@angular-devkit/core';
 import { Observable } from 'rxjs';
 import * as webpack from 'webpack';
 
@@ -10,8 +10,28 @@ export interface LoggingCallback {
     (stats: webpack.Stats, config: any, logger: logging.Logger): void;
 }
 
-export const defaultLoggingCb: LoggingCallback = (stats, config, logger) =>
-    logger.info(stats.toString(config.stats));
+export const defaultLoggingCb: LoggingCallback = (stats: webpack.Stats, config, logger) => {
+    const json = stats.toJson(config.stats);
+    // logger.info(stats.toString(config.stats));
+    // logger.warn(statsWarningsToString(json));
+    logger.error(statsErrorsToString(json));
+}
+
+export function statsWarningsToString(json: any) {
+    let str = ``;
+    json.warnings.map(warn => {
+        str += terminal.yellow(`WARNING in ${warn}\n`)
+    });
+    return str;
+}
+
+export function statsErrorsToString(json: any) {
+    let str = ``;
+    json.errors.map(warn => {
+        str += terminal.red(`ERROR in ${warn}\n`)
+    });
+    return str;
+}
 
 export class WebpackMultOption {
     constructor(

@@ -1,16 +1,16 @@
+import { merge } from 'rxjs';
 
+import { CPForkSubject } from './core';
+const forks = [];
+for (let i = 0; i < 10; i++) {
+    forks.push(run('./forks/test', (i + 1) * 100000000));
+}
 
-import { ForkChildProcessSubject } from 'imeepos-child-process';
-const fork = new ForkChildProcessSubject({
-    file: "./forks/test"
+merge(...forks).pipe().subscribe(res => {
+    console.log(res);
 });
-fork.pipe().subscribe(
-    res => {
-        console.log('recive', res.action);
-        if (res.action === 'finish') {
-            fork.unsubscribe();
-        }
-    },
-    err => console.log(err),
-    () => console.log('complete')
-);
+
+function run(file: string, start: number) {
+    const fork = new CPForkSubject(file, start).pipe();
+    return fork;
+}

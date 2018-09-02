@@ -31,7 +31,6 @@ export class NgTargetsBuilder extends WebpackBaseBuilder<NgTargetsOption> {
                     if (cfg.configs) {
                         cfgs.push(...cfg.configs);
                     }
-                    console.log(cfgs);
                 },
                 complete: () => {
                     obser.next(new WebpackMultOption(cfgs, watch));

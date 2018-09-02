@@ -1,0 +1,15 @@
+import { WebSocketGateway, WebSocketServer, SubscribeMessage, WsResponse } from '@nestjs/websockets';
+import { from, Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+
+@WebSocketGateway()
+export class SocketEvent {
+    @WebSocketServer() server;
+
+    @SubscribeMessage('events')
+    onEvent(client, data): Observable<WsResponse<number>> {
+        const event = 'events';
+        const response = [1, 2, 3];
+        return from(response).pipe(map(res => ({ event, data: res })));
+    }
+}

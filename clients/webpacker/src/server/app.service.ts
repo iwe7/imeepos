@@ -1,3 +1,4 @@
+import { NestjsStarter } from './nestjs/bootstrap';
 import { DialogService } from './electron/dialog.service';
 
 import { Injectable } from '@angular/core';
@@ -8,13 +9,15 @@ export class AppService {
     mainWindow: BrowserWindow;
     debug = /--debug/.test(process.argv[2])
     constructor(
-        public dialog: DialogService
+        public dialog: DialogService,
+        public nestjsStarter: NestjsStarter
     ) { }
 
     start() {
         console.log('app start');
         this.openWindow();
         this.dialog.start();
+        this.nestjsStarter.start();
     }
 
     openWindow() {
