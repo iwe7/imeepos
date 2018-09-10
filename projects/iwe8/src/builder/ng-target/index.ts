@@ -23,16 +23,7 @@ export class BrowserBuilder extends WebpackBaseBuilder<BrowserBuilderSchema> {
             map((cfg: Configuration) => {
                 // Entry
                 cfg.entry = {
-                    ...cfg.entry as any,
-                    ...{
-                        libs: [
-                            "@angular/core",
-                            "@angular/common",
-                            "@angular/common/http",
-                            "@angular/forms",
-                            "@angular/router"
-                        ]
-                    }
+                    ...cfg.entry as any
                 }
                 // web node electron-render electron-main webworker
                 cfg.output.libraryTarget = 'umd';
@@ -45,13 +36,11 @@ export class BrowserBuilder extends WebpackBaseBuilder<BrowserBuilderSchema> {
                 cfg.resolve.extensions.push('.css');
                 cfg.resolve.extensions.push('.scss');
                 cfg.resolve.extensions.push('.less');
-
                 cfg.recordsPath = join(root, 'records.json');
                 cfg.recordsInputPath = join(root, 'records.json');
                 cfg.recordsOutputPath = join(root, 'records.json');
                 cfg.optimization.portableRecords = true;
                 cfg.optimization.occurrenceOrder = true;
-
                 if (options.deps) {
                     options.deps.map(name => {
                         const json = require(join(root, mainfast, name, name + '.json'));
