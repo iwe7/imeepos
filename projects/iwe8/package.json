@@ -10,7 +10,10 @@
     "reflect-metadata": "*",
     "rxjs": "^6.0.0",
     "@angular/compiler-cli": "^6.1.4",
-    "gulp-typescript": "^5.0.0-alpha.3"
+    "gulp-typescript": "^5.0.0-alpha.3",
+    "@nestjs/common": "^5.3.6",
+    "simple-git": "^1.96.0",
+    "@nestjs/core": "^5.3.6"
   },
   "main": "public_api.js",
   "typings": "public_api.d.ts",
